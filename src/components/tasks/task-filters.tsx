@@ -19,26 +19,26 @@ export const TaskFiltersPanel = ({
   onFiltersChange,
   onReset,
 }: TaskFiltersProps) => (
-  <div className="glass-panel surface-outline space-y-4 p-4">
-    <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
+  <div className="glass-panel surface-outline space-y-3 p-3.5 sm:p-4">
+    <div className="flex flex-col gap-2.5 xl:flex-row xl:items-center">
       <div className="relative flex-1">
-        <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           value={filters.query}
           onChange={(event) => onFiltersChange({ query: event.target.value })}
           placeholder="Search tasks, notes, or tags..."
-          className="pl-11"
+          className="h-10 rounded-[18px] pl-10 shadow-none"
         />
       </div>
-      <Button variant="outline" onClick={onReset} className="rounded-2xl">
+      <Button variant="outline" size="sm" onClick={onReset} className="h-10 rounded-[18px] px-4">
         <X className="h-4 w-4" />
         Clear filters
       </Button>
     </div>
 
-    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-      <div className="space-y-2">
-        <p className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+    <div className="grid gap-2.5 md:grid-cols-2 xl:grid-cols-4">
+      <div className="space-y-1.5">
+        <p className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.24em] text-muted-foreground">
           <SlidersHorizontal className="h-3.5 w-3.5" />
           Status
         </p>
@@ -46,7 +46,7 @@ export const TaskFiltersPanel = ({
           value={filters.status}
           onValueChange={(value) => onFiltersChange({ status: value as TaskFilters["status"] })}
         >
-          <SelectTrigger>
+          <SelectTrigger className="h-10 rounded-[18px] shadow-none">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -57,13 +57,15 @@ export const TaskFiltersPanel = ({
         </Select>
       </div>
 
-      <div className="space-y-2">
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Priority</p>
+      <div className="space-y-1.5">
+        <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-muted-foreground">
+          Priority
+        </p>
         <Select
           value={filters.priority}
           onValueChange={(value) => onFiltersChange({ priority: value as TaskFilters["priority"] })}
         >
-          <SelectTrigger>
+          <SelectTrigger className="h-10 rounded-[18px] shadow-none">
             <SelectValue placeholder="Priority" />
           </SelectTrigger>
           <SelectContent>
@@ -76,13 +78,15 @@ export const TaskFiltersPanel = ({
         </Select>
       </div>
 
-      <div className="space-y-2">
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Timeline</p>
+      <div className="space-y-1.5">
+        <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-muted-foreground">
+          Timeline
+        </p>
         <Select
           value={filters.view}
           onValueChange={(value) => onFiltersChange({ view: value as TaskFilters["view"] })}
         >
-          <SelectTrigger>
+          <SelectTrigger className="h-10 rounded-[18px] shadow-none">
             <SelectValue placeholder="Timeline" />
           </SelectTrigger>
           <SelectContent>
@@ -94,10 +98,10 @@ export const TaskFiltersPanel = ({
         </Select>
       </div>
 
-      <div className="space-y-2">
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Tag</p>
+      <div className="space-y-1.5">
+        <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-muted-foreground">Tag</p>
         <Select value={filters.tag} onValueChange={(value) => onFiltersChange({ tag: value })}>
-          <SelectTrigger>
+          <SelectTrigger className="h-10 rounded-[18px] shadow-none">
             <SelectValue placeholder="Tag" />
           </SelectTrigger>
           <SelectContent>

@@ -16,10 +16,10 @@ import { cn } from "@/utils/cn";
 import { formatDueContext, formatRelativeDate, formatTaskDate, isTaskOverdue } from "@/utils/date";
 
 const priorityVariantMap = {
-  low: "secondary",
-  medium: "default",
-  high: "warning",
-  urgent: "destructive",
+  low: "low",
+  medium: "medium",
+  high: "high",
+  urgent: "urgent",
 } as const;
 
 interface TaskItemProps {
@@ -46,9 +46,9 @@ export const TaskItem = ({ task, onToggle, onEdit, onDelete }: TaskItemProps) =>
       exit={{ opacity: 0, y: -10 }}
       className={cn(isDragging && "z-20")}
     >
-      <Card
-        className={cn(
-          "transition duration-200 hover:-translate-y-0.5 hover:bg-white/[0.08]",
+        <Card
+          className={cn(
+          "transition duration-200 hover:-translate-y-0.5 hover:bg-black/[0.03] dark:hover:bg-white/[0.08]",
           task.completed && "opacity-75",
           isDragging && "shadow-glow",
         )}
@@ -62,7 +62,7 @@ export const TaskItem = ({ task, onToggle, onEdit, onDelete }: TaskItemProps) =>
               aria-label={task.completed ? "Mark task as incomplete" : "Mark task as complete"}
             >
               {task.completed ? (
-                <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+                <CheckCircle2 className="h-5 w-5 text-foreground" />
               ) : (
                 <Circle className="h-5 w-5" />
               )}
@@ -85,7 +85,7 @@ export const TaskItem = ({ task, onToggle, onEdit, onDelete }: TaskItemProps) =>
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    className="rounded-full p-2 text-muted-foreground transition hover:bg-white/10 hover:text-foreground"
+                    className="rounded-full p-2 text-muted-foreground transition hover:bg-black/[0.05] hover:text-foreground dark:hover:bg-white/10"
                     aria-label="Reorder task"
                     {...attributes}
                     {...listeners}
@@ -106,7 +106,7 @@ export const TaskItem = ({ task, onToggle, onEdit, onDelete }: TaskItemProps) =>
                         Edit task
                       </DropdownMenuItem>
                       <DropdownMenuItem
-                        className="text-red-300 focus:text-red-200"
+                        className="text-foreground focus:text-foreground"
                         onClick={() => onDelete(task.id)}
                       >
                         <Trash2 className="mr-2 h-4 w-4" />
@@ -118,7 +118,9 @@ export const TaskItem = ({ task, onToggle, onEdit, onDelete }: TaskItemProps) =>
               </div>
 
               <div className="mt-4 flex flex-wrap items-center gap-2">
-                <Badge variant={priorityVariantMap[task.priority]}>{task.priority}</Badge>
+                <Badge variant={priorityVariantMap[task.priority]} className="capitalize">
+                  {task.priority}
+                </Badge>
 
                 <Badge
                   variant={isTaskOverdue(task.dueDate) && !task.completed ? "destructive" : "secondary"}

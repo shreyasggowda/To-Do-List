@@ -1,4 +1,4 @@
--- FocusFlow multi-user schema
+-- To Do List multi-user schema
 -- Run this in the Supabase SQL editor before using the deployed app.
 
 create extension if not exists pgcrypto;

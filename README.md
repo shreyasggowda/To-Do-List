@@ -1,6 +1,6 @@
-# FocusFlow
+# To Do List
 
-FocusFlow is a modern premium productivity web app built with React, Vite, TypeScript, Tailwind CSS, Zustand, Framer Motion, dnd-kit, shadcn-style UI primitives, and Supabase.
+To Do List is a modern premium productivity web app built with React, Vite, TypeScript, Tailwind CSS, Zustand, Framer Motion, dnd-kit, shadcn-style UI primitives, and Supabase.
 
 It is designed to feel closer to a real SaaS productivity tool than a basic CRUD todo app, with a dark-first interface, glassmorphism surfaces, smooth transitions, keyboard shortcuts, a command palette, a productivity dashboard, and real multi-user account support.
 

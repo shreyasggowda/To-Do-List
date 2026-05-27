@@ -14,7 +14,7 @@ const DialogOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
-    className={cn("fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm", className)}
+    className={cn("fixed inset-0 z-50 bg-black/45 backdrop-blur-sm dark:bg-black/70", className)}
     {...props}
   />
 ));
@@ -29,13 +29,13 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-2xl -translate-x-1/2 -translate-y-1/2 rounded-[32px] border border-white/10 bg-slate-950/95 p-6 text-foreground shadow-glow backdrop-blur-xl duration-200 dark:bg-slate-950/95",
+        "fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-2xl -translate-x-1/2 -translate-y-1/2 rounded-[32px] border border-black/10 bg-white/95 p-6 text-foreground shadow-[0_28px_70px_rgba(0,0,0,0.16)] backdrop-blur-xl duration-200 dark:border-white/10 dark:bg-black/95 dark:shadow-[0_34px_72px_rgba(0,0,0,0.45)] sm:p-7",
         className,
       )}
       {...props}
     >
       {children}
-      <DialogClose className="absolute right-5 top-5 rounded-full p-1 text-muted-foreground transition hover:bg-white/10 hover:text-foreground">
+      <DialogClose className="absolute right-5 top-5 rounded-full p-1 text-muted-foreground transition hover:bg-black/[0.05] hover:text-foreground dark:hover:bg-white/10">
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogClose>
@@ -56,7 +56,7 @@ const DialogTitle = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
 >(({ className, ...props }, ref) => (
-  <DialogPrimitive.Title ref={ref} className={cn("text-xl font-semibold", className)} {...props} />
+  <DialogPrimitive.Title ref={ref} className={cn("text-2xl font-semibold tracking-tight", className)} {...props} />
 ));
 DialogTitle.displayName = DialogPrimitive.Title.displayName;
 

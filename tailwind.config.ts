@@ -46,14 +46,8 @@ const config: Config = {
         sans: ["'Plus Jakarta Sans'", "sans-serif"],
       },
       boxShadow: {
-        glow: "0 20px 45px -25px rgba(15, 23, 42, 0.55)",
-        glass: "0 12px 40px rgba(15, 23, 42, 0.18)",
-      },
-      backgroundImage: {
-        "mesh-dark":
-          "radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.14), transparent 26%), radial-gradient(circle at 80% 0%, rgba(129, 140, 248, 0.16), transparent 28%), radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.12), transparent 24%)",
-        "mesh-light":
-          "radial-gradient(circle at 20% 20%, rgba(14, 165, 233, 0.16), transparent 25%), radial-gradient(circle at 85% 10%, rgba(99, 102, 241, 0.12), transparent 24%), radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.1), transparent 22%)",
+        glow: "0 20px 45px -25px rgba(0, 0, 0, 0.5)",
+        glass: "0 12px 40px rgba(0, 0, 0, 0.14)",
       },
       keyframes: {
         float: {

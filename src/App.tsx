@@ -12,6 +12,7 @@ import { SetupPage } from "@/pages/setup-page";
 import { TasksPage } from "@/pages/tasks-page";
 import { useAppStore, useEditingTask } from "@/store/use-app-store";
 import type { TaskPage } from "@/types/task";
+import { getBrandLogoSrc } from "@/utils/branding";
 import { isSupabaseConfigured, supabase } from "@/utils/supabase";
 import {
   filterTasks,
@@ -38,12 +39,18 @@ const pageMeta: Record<
   },
 };
 
-const toasterOptions = {
+const getToasterOptions = (theme: "light" | "dark") => ({
   classNames: {
-    toast: "!border-white/10 !bg-slate-950/90 !text-foreground",
-    description: "!text-slate-300",
+    // Sonner toasts render in a portal, so explicit theme branches are more
+    // reliable than dark: utilities for keeping contrast correct.
+    toast:
+      theme === "dark"
+        ? "!border-white/10 !bg-black/94 !text-white !shadow-[0_24px_50px_rgba(0,0,0,0.45)]"
+        : "!border-black/10 !bg-white/95 !text-black !shadow-[0_18px_40px_rgba(0,0,0,0.14)]",
+    title: theme === "dark" ? "!text-white" : "!text-black",
+    description: theme === "dark" ? "!text-white/70" : "!text-black/60",
   },
-};
+});
 
 const App = () => {
   const tasks = useAppStore((state) => state.tasks);
@@ -58,6 +65,7 @@ const App = () => {
   const setSession = useAppStore((state) => state.setSession);
   const loadTasks = useAppStore((state) => state.loadTasks);
   const signIn = useAppStore((state) => state.signIn);
+  const signInWithGoogle = useAppStore((state) => state.signInWithGoogle);
   const signUp = useAppStore((state) => state.signUp);
   const signOut = useAppStore((state) => state.signOut);
   const addTask = useAppStore((state) => state.addTask);
@@ -155,7 +163,7 @@ const App = () => {
   const toggleTheme = () => {
     const nextTheme = theme === "dark" ? "light" : "dark";
     setTheme(nextTheme);
-    toast.success(`${nextTheme === "dark" ? "Dark" : "Light"} mode activated`);
+    toast.success(`${nextTheme === "dark" ? "Dark" : "Light"} mode enabled`);
   };
 
   useKeyboardShortcuts({
@@ -170,7 +178,7 @@ const App = () => {
     return (
       <>
         <SetupPage />
-        <Toaster theme={theme} position="top-right" toastOptions={toasterOptions} />
+        <Toaster theme={theme} position="top-right" toastOptions={getToasterOptions(theme)} />
       </>
     );
   }
@@ -179,13 +187,20 @@ const App = () => {
     return (
       <div className="flex min-h-screen items-center justify-center px-4">
         <div className="glass-panel-strong surface-outline rounded-[32px] px-8 py-10 text-center">
-          <p className="text-sm uppercase tracking-[0.24em] text-muted-foreground">FocusFlow</p>
+          <div className="flex justify-center">
+            <img
+              src={getBrandLogoSrc(theme === "dark")}
+              alt="To Do List logo"
+              className="h-12 w-12 rounded-2xl object-cover"
+            />
+          </div>
+          <p className="text-sm uppercase tracking-[0.24em] text-muted-foreground">To Do List</p>
           <h2 className="mt-3 text-2xl font-semibold">Loading your workspace</h2>
           <p className="mt-3 text-sm text-muted-foreground">
             Reconnecting to the account session and restoring cloud data.
           </p>
         </div>
-        <Toaster theme={theme} position="top-right" toastOptions={toasterOptions} />
+        <Toaster theme={theme} position="top-right" toastOptions={getToasterOptions(theme)} />
       </div>
     );
   }
@@ -196,16 +211,23 @@ const App = () => {
         <AuthPage
           isDarkMode={theme === "dark"}
           onToggleTheme={toggleTheme}
+          onSignInWithGoogle={async () => {
+            await signInWithGoogle();
+          }}
           onSignIn={async (email, password) => {
             await signIn(email, password);
             toast.success("Welcome back");
           }}
           onSignUp={async (email, password) => {
-            await signUp(email, password);
-            toast.success("Account created. Check your email if confirmation is enabled.");
+            const result = await signUp(email, password);
+            toast.success(
+              result.needsEmailVerification
+                ? `Verification email sent to ${result.email}. Open it to activate your account.`
+                : `Account created for ${result.email}. You can start using your workspace now.`,
+            );
           }}
         />
-        <Toaster theme={theme} position="top-right" toastOptions={toasterOptions} />
+        <Toaster theme={theme} position="top-right" toastOptions={getToasterOptions(theme)} />
       </>
     );
   }
@@ -248,15 +270,12 @@ const App = () => {
                 stats={stats}
                 weeklyCompletionData={weeklyCompletionData}
                 priorityChartData={priorityChartData}
-                onCreateTask={() => openTaskDialog()}
-                onGoToTasks={() => navigateTo("tasks")}
               />
             ) : (
               <TasksPage
                 tasks={filteredTasks}
                 filters={filters}
                 availableTags={availableTags}
-                totalTasks={tasks.length}
                 isLoading={isTasksLoading}
                 onFiltersChange={updateFilters}
                 onResetFilters={resetFilters}
@@ -340,7 +359,7 @@ const App = () => {
         }}
       />
 
-      <Toaster theme={theme} position="top-right" toastOptions={toasterOptions} />
+      <Toaster theme={theme} position="top-right" toastOptions={getToasterOptions(theme)} />
     </>
   );
 };

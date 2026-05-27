@@ -7,11 +7,15 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: "border-transparent bg-primary/15 text-primary",
-        secondary: "border-white/10 bg-white/10 text-foreground",
-        success: "border-emerald-400/20 bg-emerald-500/15 text-emerald-300",
-        warning: "border-amber-400/20 bg-amber-500/15 text-amber-300",
-        destructive: "border-red-400/20 bg-red-500/15 text-red-300",
+        default: "border-black/10 bg-black/[0.12] text-foreground dark:border-white/12 dark:bg-white/[0.18]",
+        secondary: "border-black/10 bg-black/[0.04] text-foreground dark:border-white/10 dark:bg-white/10",
+        success: "border-black/10 bg-black/[0.04] text-black/70 dark:border-white/12 dark:bg-white/[0.1] dark:text-white/80",
+        warning: "border-black/10 bg-black/[0.12] text-black/80 dark:border-white/12 dark:bg-white/[0.18] dark:text-white/90",
+        destructive: "border-black/10 bg-black/[0.22] text-black dark:border-white/14 dark:bg-white/[0.3] dark:text-white",
+        low: "border-black/10 bg-black/[0.14] text-black/80 dark:border-white/10 dark:bg-white/[0.22] dark:text-white/78",
+        medium: "border-black/10 bg-black/[0.28] text-black/90 dark:border-white/10 dark:bg-white/[0.42] dark:text-white/88",
+        high: "border-black/10 bg-black/[0.42] text-white dark:border-white/12 dark:bg-white/[0.68] dark:text-black/85",
+        urgent: "border-black/10 bg-black/[0.88] text-white dark:border-white/14 dark:bg-white/[0.94] dark:text-black",
       },
     },
     defaultVariants: {

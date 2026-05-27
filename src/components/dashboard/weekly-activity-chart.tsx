@@ -12,7 +12,7 @@ export const WeeklyActivityChart = ({ data }: WeeklyActivityChartProps) => (
     <Card className="h-full min-w-0">
       <CardHeader>
         <CardTitle>Weekly Momentum</CardTitle>
-        <CardDescription>See how consistently tasks are being closed this week.</CardDescription>
+        <CardDescription>Tasks completed this week.</CardDescription>
       </CardHeader>
       <CardContent className="h-[260px] min-w-0 pt-2">
         <ChartGuard>
@@ -20,25 +20,25 @@ export const WeeklyActivityChart = ({ data }: WeeklyActivityChartProps) => (
             <AreaChart data={data}>
               <defs>
                 <linearGradient id="completedGradient" x1="0" x2="0" y1="0" y2="1">
-                  <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.65} />
-                  <stop offset="95%" stopColor="#38bdf8" stopOpacity={0.04} />
+                  <stop offset="5%" stopColor="var(--chart-area-line)" stopOpacity={1} />
+                  <stop offset="95%" stopColor="var(--chart-area-line)" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid stroke="rgba(148, 163, 184, 0.12)" vertical={false} />
-              <XAxis dataKey="day" stroke="#94a3b8" tickLine={false} axisLine={false} />
-              <YAxis allowDecimals={false} stroke="#94a3b8" tickLine={false} axisLine={false} width={24} />
+              <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
+              <XAxis dataKey="day" stroke="var(--chart-axis)" tickLine={false} axisLine={false} />
+              <YAxis allowDecimals={false} stroke="var(--chart-axis)" tickLine={false} axisLine={false} width={24} />
               <Tooltip
-                cursor={{ stroke: "rgba(56, 189, 248, 0.2)", strokeWidth: 2 }}
+                cursor={{ stroke: "var(--chart-grid)", strokeWidth: 2 }}
                 contentStyle={{
-                  background: "rgba(15, 23, 42, 0.92)",
-                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: "var(--chart-tooltip-bg)",
+                  border: "1px solid var(--chart-tooltip-border)",
                   borderRadius: "16px",
                 }}
               />
               <Area
                 type="monotone"
                 dataKey="completed"
-                stroke="#38bdf8"
+                stroke="var(--chart-area-line)"
                 strokeWidth={3}
                 fill="url(#completedGradient)"
               />
@@ -64,7 +64,7 @@ const ChartGuard = ({ children }: { children: React.ReactNode }) => {
   const mounted = useMounted();
 
   if (!mounted) {
-    return <div className="h-full rounded-3xl bg-white/5" />;
+    return <div className="h-full rounded-3xl bg-black/[0.04] dark:bg-white/5" />;
   }
 
   return <>{children}</>;

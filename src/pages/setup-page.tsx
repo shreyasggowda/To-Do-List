@@ -15,16 +15,16 @@ export const SetupPage = () => (
         </CardHeader>
         <CardContent className="grid gap-4 lg:grid-cols-3">
           <div className="rounded-[28px] bg-white/5 p-5">
-            <KeyRound className="h-5 w-5 text-primary" />
+            <KeyRound className="h-5 w-5 text-foreground" />
             <p className="mt-4 font-semibold">1. Add env vars</p>
-            <pre className="mt-3 overflow-x-auto rounded-2xl bg-slate-950/60 p-4 text-sm text-slate-200">
+            <pre className="mt-3 overflow-x-auto rounded-2xl bg-black/70 p-4 text-sm text-white/85">
 {`VITE_SUPABASE_URL=...
 VITE_SUPABASE_PUBLISHABLE_KEY=...`}
             </pre>
           </div>
 
           <div className="rounded-[28px] bg-white/5 p-5">
-            <DatabaseZap className="h-5 w-5 text-emerald-300" />
+            <DatabaseZap className="h-5 w-5 text-foreground" />
             <p className="mt-4 font-semibold">2. Run the schema</p>
             <p className="mt-3 text-sm text-muted-foreground">
               Open the Supabase SQL editor and run the statements from `supabase/schema.sql`.
@@ -32,7 +32,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=...`}
           </div>
 
           <div className="rounded-[28px] bg-white/5 p-5">
-            <FileCode2 className="h-5 w-5 text-sky-300" />
+            <FileCode2 className="h-5 w-5 text-foreground" />
             <p className="mt-4 font-semibold">3. Restart the app</p>
             <p className="mt-3 text-sm text-muted-foreground">
               Restart `npm run dev` so Vite reloads the new environment variables.

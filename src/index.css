@@ -6,44 +6,66 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
+    --background: 0 0% 94%;
+    --foreground: 0 0% 9%;
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 46%;
-    --accent: 199 89% 48%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 217 91% 60%;
+    --card-foreground: 0 0% 9%;
+    --primary: 0 0% 8%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 90%;
+    --secondary-foreground: 0 0% 12%;
+    --muted: 0 0% 91%;
+    --muted-foreground: 0 0% 33%;
+    --accent: 0 0% 14%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 0% 14%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 82%;
+    --input: 0 0% 82%;
+    --ring: 0 0% 22%;
+    --chart-axis: rgba(18, 18, 18, 0.58);
+    --chart-grid: rgba(18, 18, 18, 0.09);
+    --chart-tooltip-bg: rgba(255, 255, 255, 0.96);
+    --chart-tooltip-border: rgba(18, 18, 18, 0.1);
+    --chart-bar-low: rgba(18, 18, 18, 0.28);
+    --chart-bar-medium: rgba(18, 18, 18, 0.48);
+    --chart-bar-high: rgba(18, 18, 18, 0.68);
+    --chart-bar-urgent: rgba(18, 18, 18, 0.88);
+    --chart-area-line: rgba(18, 18, 18, 0.92);
+    --chart-area-top: rgba(18, 18, 18, 0.28);
+    --chart-area-bottom: rgba(18, 18, 18, 0.04);
     --radius: 1rem;
   }
 
   .dark {
-    --background: 224 35% 8%;
-    --foreground: 210 40% 98%;
-    --card: 224 28% 11%;
-    --card-foreground: 210 40% 98%;
-    --primary: 199 89% 58%;
-    --primary-foreground: 222 47% 11%;
-    --secondary: 223 28% 16%;
-    --secondary-foreground: 210 40% 96%;
-    --muted: 223 28% 16%;
-    --muted-foreground: 215 20% 68%;
-    --accent: 188 86% 53%;
-    --accent-foreground: 222 47% 11%;
-    --destructive: 0 72% 56%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 223 22% 19%;
-    --input: 223 22% 19%;
-    --ring: 199 89% 58%;
+    --background: 0 0% 4%;
+    --foreground: 0 0% 97%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 97%;
+    --primary: 0 0% 96%;
+    --primary-foreground: 0 0% 8%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 94%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 62%;
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 8%;
+    --destructive: 0 0% 96%;
+    --destructive-foreground: 0 0% 8%;
+    --border: 0 0% 14%;
+    --input: 0 0% 14%;
+    --ring: 0 0% 74%;
+    --chart-axis: rgba(255, 255, 255, 0.58);
+    --chart-grid: rgba(255, 255, 255, 0.08);
+    --chart-tooltip-bg: rgba(10, 10, 10, 0.94);
+    --chart-tooltip-border: rgba(255, 255, 255, 0.08);
+    --chart-bar-low: rgba(255, 255, 255, 0.28);
+    --chart-bar-medium: rgba(255, 255, 255, 0.5);
+    --chart-bar-high: rgba(255, 255, 255, 0.72);
+    --chart-bar-urgent: rgba(255, 255, 255, 0.95);
+    --chart-area-line: rgba(255, 255, 255, 1);
+    --chart-area-top: rgba(255, 255, 255, 0.65);
+    --chart-area-bottom: rgba(255, 255, 255, 0.04);
   }
 
   * {
@@ -56,20 +78,17 @@
 
   body {
     @apply min-h-screen bg-background font-sans text-foreground antialiased;
-    background-image: linear-gradient(
-        180deg,
-        rgba(15, 23, 42, 0) 0%,
-        rgba(15, 23, 42, 0.1) 100%
-      ),
-      var(--app-mesh);
+    background-image: none;
   }
 
-  body {
-    --app-mesh: theme("backgroundImage.mesh-light");
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.72;
   }
 
-  .dark body {
-    --app-mesh: theme("backgroundImage.mesh-dark");
+  .dark input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) grayscale(1);
+    opacity: 0.9;
   }
 
   #root {
@@ -81,15 +100,33 @@
   /* Tailwind utility classes stay readable when repeated styles are extracted
      into semantic component classes like these glass panels. */
   .glass-panel {
-    @apply rounded-[28px] border border-white/10 bg-white/70 shadow-glass backdrop-blur-xl dark:bg-slate-950/45;
+    @apply rounded-[28px] border border-black/10 bg-white/90 backdrop-blur-xl dark:border-white/10 dark:bg-black/50;
+    box-shadow:
+      0 18px 40px rgba(0, 0, 0, 0.07),
+      0 2px 10px rgba(0, 0, 0, 0.03);
   }
 
   .glass-panel-strong {
-    @apply rounded-[28px] border border-white/15 bg-white/80 shadow-glow backdrop-blur-2xl dark:bg-slate-950/65;
+    @apply rounded-[28px] border border-black/10 bg-white/95 backdrop-blur-2xl dark:border-white/10 dark:bg-black/70;
+    box-shadow:
+      0 20px 44px rgba(0, 0, 0, 0.09),
+      0 4px 14px rgba(0, 0, 0, 0.04);
   }
 
   .surface-outline {
-    @apply border border-white/10 dark:border-white/5;
+    @apply border border-black/10 dark:border-white/10;
+  }
+
+  .dark .glass-panel {
+    box-shadow:
+      0 26px 60px rgba(0, 0, 0, 0.34),
+      0 2px 16px rgba(255, 255, 255, 0.02);
+  }
+
+  .dark .glass-panel-strong {
+    box-shadow:
+      0 34px 72px rgba(0, 0, 0, 0.42),
+      0 2px 18px rgba(255, 255, 255, 0.03);
   }
 }
 
@@ -100,6 +137,6 @@
 
   .scrollbar-subtle {
     scrollbar-width: thin;
-    scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
   }
 }

@@ -33,7 +33,11 @@ interface AppState {
   setSession: (session: Session | null) => void;
   loadTasks: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
+  signUp: (
+    email: string,
+    password: string,
+  ) => Promise<{ email: string; needsEmailVerification: boolean }>;
   signOut: () => Promise<void>;
   addTask: (values: TaskFormValues) => Promise<void>;
   updateTask: (taskId: string, values: TaskFormValues) => Promise<void>;
@@ -121,6 +125,24 @@ export const useAppStore = create<AppState>()(
           throw new Error(error.message);
         }
       },
+      signInWithGoogle: async () => {
+        if (!supabase) {
+          throw new Error("Supabase is not configured yet.");
+        }
+
+        // OAuth lets Google own the sensitive password flow while Supabase
+        // handles the callback and turns it into a normal session for the app.
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            redirectTo: window.location.origin,
+          },
+        });
+
+        if (error) {
+          throw new Error(error.message);
+        }
+      },
       signUp: async (email, password) => {
         if (!supabase) {
           throw new Error("Supabase is not configured yet.");
@@ -144,6 +166,13 @@ export const useAppStore = create<AppState>()(
             authStatus: "signed-in",
           });
         }
+
+        // When email confirmation is enabled, Supabase returns no session yet.
+        // Returning this flag lets the UI show a precise next-step message.
+        return {
+          email,
+          needsEmailVerification: !data.session,
+        };
       },
       signOut: async () => {
         if (!supabase) {

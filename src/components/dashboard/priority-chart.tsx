@@ -4,10 +4,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useMounted } from "@/hooks/use-mounted";
 
 const priorityColors: Record<string, string> = {
-  low: "#34d399",
-  medium: "#60a5fa",
-  high: "#f59e0b",
-  urgent: "#f87171",
+  low: "var(--chart-bar-low)",
+  medium: "var(--chart-bar-medium)",
+  high: "var(--chart-bar-high)",
+  urgent: "var(--chart-bar-urgent)",
 };
 
 interface PriorityChartProps {
@@ -23,7 +23,7 @@ export const PriorityChart = ({ data }: PriorityChartProps) => (
     <Card className="h-full min-w-0">
       <CardHeader>
         <CardTitle>Priority Load</CardTitle>
-        <CardDescription>Balance the remaining workload before it becomes noisy.</CardDescription>
+        <CardDescription>Tasks grouped by priority.</CardDescription>
       </CardHeader>
       <CardContent className="h-[260px] min-w-0 pt-2">
         <PriorityChartGuard data={data} />
@@ -36,7 +36,7 @@ const PriorityChartGuard = ({ data }: PriorityChartProps) => {
   const mounted = useMounted();
 
   if (!mounted) {
-    return <div className="h-full rounded-3xl bg-white/5" />;
+    return <div className="h-full rounded-3xl bg-black/[0.04] dark:bg-white/5" />;
   }
 
   return (
@@ -44,17 +44,17 @@ const PriorityChartGuard = ({ data }: PriorityChartProps) => {
       <BarChart data={data}>
         <XAxis
           dataKey="priority"
-          stroke="#94a3b8"
+          stroke="var(--chart-axis)"
           tickLine={false}
           axisLine={false}
           tickFormatter={(value) => value.toUpperCase()}
         />
-        <YAxis allowDecimals={false} stroke="#94a3b8" tickLine={false} axisLine={false} width={24} />
+        <YAxis allowDecimals={false} stroke="var(--chart-axis)" tickLine={false} axisLine={false} width={24} />
         <Tooltip
-          cursor={{ fill: "rgba(255,255,255,0.04)" }}
+          cursor={{ fill: "var(--chart-grid)" }}
           contentStyle={{
-            background: "rgba(15, 23, 42, 0.92)",
-            border: "1px solid rgba(255,255,255,0.08)",
+            background: "var(--chart-tooltip-bg)",
+            border: "1px solid var(--chart-tooltip-border)",
             borderRadius: "16px",
           }}
         />

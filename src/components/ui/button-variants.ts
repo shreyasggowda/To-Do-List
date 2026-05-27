@@ -6,13 +6,13 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-lg shadow-sky-500/20 hover:translate-y-[-1px] hover:bg-primary/90",
+          "bg-primary text-primary-foreground shadow-lg shadow-black/20 hover:translate-y-[-1px] hover:bg-primary/90 dark:shadow-black/35",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost:
           "text-foreground hover:bg-white/10 dark:hover:bg-white/5",
         outline:
-          "border border-white/10 bg-white/5 text-foreground hover:bg-white/10 dark:border-white/10 dark:bg-white/5",
+          "border border-black/10 bg-white/80 text-foreground shadow-sm shadow-black/10 hover:bg-black/[0.04] dark:border-white/10 dark:bg-white/5 dark:shadow-black/30 dark:hover:bg-white/10",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
       },

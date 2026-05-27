@@ -57,7 +57,7 @@ export const TaskList = ({
         </DndContext>
       ) : (
         <div className="glass-panel surface-outline flex min-h-[300px] flex-col items-center justify-center rounded-[32px] border-dashed p-8 text-center">
-          <div className="rounded-full border border-white/10 bg-white/5 p-4">
+          <div className="rounded-full border border-black/10 bg-black/[0.04] p-4 dark:border-white/10 dark:bg-white/5">
             <Inbox className="h-6 w-6 text-muted-foreground" />
           </div>
           <p className="mt-5 text-lg font-semibold">Nothing matches these filters</p>
