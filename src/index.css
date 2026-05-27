@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 46%;
+    --accent: 199 89% 48%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 217 91% 60%;
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 224 35% 8%;
+    --foreground: 210 40% 98%;
+    --card: 224 28% 11%;
+    --card-foreground: 210 40% 98%;
+    --primary: 199 89% 58%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 223 28% 16%;
+    --secondary-foreground: 210 40% 96%;
+    --muted: 223 28% 16%;
+    --muted-foreground: 215 20% 68%;
+    --accent: 188 86% 53%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 72% 56%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 223 22% 19%;
+    --input: 223 22% 19%;
+    --ring: 199 89% 58%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-background font-sans text-foreground antialiased;
+    background-image: linear-gradient(
+        180deg,
+        rgba(15, 23, 42, 0) 0%,
+        rgba(15, 23, 42, 0.1) 100%
+      ),
+      var(--app-mesh);
+  }
+
+  body {
+    --app-mesh: theme("backgroundImage.mesh-light");
+  }
+
+  .dark body {
+    --app-mesh: theme("backgroundImage.mesh-dark");
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+}
+
+@layer components {
+  /* Tailwind utility classes stay readable when repeated styles are extracted
+     into semantic component classes like these glass panels. */
+  .glass-panel {
+    @apply rounded-[28px] border border-white/10 bg-white/70 shadow-glass backdrop-blur-xl dark:bg-slate-950/45;
+  }
+
+  .glass-panel-strong {
+    @apply rounded-[28px] border border-white/15 bg-white/80 shadow-glow backdrop-blur-2xl dark:bg-slate-950/65;
+  }
+
+  .surface-outline {
+    @apply border border-white/10 dark:border-white/5;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-subtle {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+  }
+}
