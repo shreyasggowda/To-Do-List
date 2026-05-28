@@ -69,23 +69,23 @@ export const TaskItem = ({ task, onToggle, onEdit, onDelete }: TaskItemProps) =>
             </button>
 
             <div className="min-w-0 flex-1">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
                   <p
                     className={cn(
-                      "text-base font-semibold",
+                      "text-base font-semibold break-words",
                       task.completed && "text-muted-foreground line-through",
                     )}
                   >
                     {task.title}
                   </p>
-                  <p className="mt-1 text-sm text-muted-foreground">{task.description}</p>
+                  <p className="mt-1 text-sm text-muted-foreground break-words">{task.description}</p>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 shrink-0">
                   <button
                     type="button"
-                    className="rounded-full p-2 text-muted-foreground transition hover:bg-black/[0.05] hover:text-foreground dark:hover:bg-white/10"
+                    className="rounded-full p-2 text-muted-foreground transition hover:bg-black/[0.05] hover:text-foreground dark:hover:bg-white/10 touch-none"
                     aria-label="Reorder task"
                     {...attributes}
                     {...listeners}

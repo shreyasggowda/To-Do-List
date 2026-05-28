@@ -20,7 +20,7 @@ export const DashboardPage = ({
 }: DashboardPageProps) => (
   <div className="space-y-4">
     <Card className="overflow-hidden">
-      <CardContent className="p-6 sm:p-7">
+      <CardContent className="p-4 sm:p-7">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.24em] text-muted-foreground">Overview</p>
@@ -39,7 +39,7 @@ export const DashboardPage = ({
       </CardContent>
     </Card>
 
-    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
       <StatCard label="Total tasks" value={String(stats.totalTasks)} icon={ListTodo} index={0} />
       <StatCard label="Completed" value={String(stats.completedTasks)} icon={CheckCheck} index={1} />
       <StatCard label="Pending" value={String(stats.pendingTasks)} icon={CircleDashed} index={2} />

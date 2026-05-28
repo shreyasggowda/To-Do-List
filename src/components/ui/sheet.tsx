@@ -14,7 +14,7 @@ const SheetOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
-    className={cn("fixed inset-0 z-50 bg-black/70 backdrop-blur-sm", className)}
+    className={cn("fixed inset-0 z-50 bg-black/70 backdrop-blur-sm sheet-overlay-animate", className)}
     {...props}
   />
 ));
@@ -29,13 +29,17 @@ const SheetContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-y-0 left-0 z-50 w-[90vw] max-w-sm border-r border-white/10 bg-black/95 p-6 text-foreground shadow-glow backdrop-blur-2xl",
+        "fixed inset-y-0 left-0 z-50 w-[90vw] max-w-sm border-r border-black/10 bg-white/95 p-6 text-foreground shadow-glow backdrop-blur-2xl dark:border-white/10 dark:bg-black/95 sheet-content-animate",
         className,
       )}
       {...props}
     >
+      <DialogPrimitive.Title className="sr-only">Navigation Menu</DialogPrimitive.Title>
+      <DialogPrimitive.Description className="sr-only">
+        Navigate to different workspace views and manage your user account settings.
+      </DialogPrimitive.Description>
       {children}
-      <SheetClose className="absolute right-5 top-5 rounded-full p-1 text-muted-foreground transition hover:bg-white/10 hover:text-foreground">
+      <SheetClose className="absolute right-5 top-5 rounded-full p-1 text-muted-foreground transition hover:bg-black/[0.05] hover:text-foreground dark:hover:bg-white/10">
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </SheetClose>

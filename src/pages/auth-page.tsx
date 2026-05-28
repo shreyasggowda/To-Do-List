@@ -2,7 +2,7 @@ import { useState } from "react";
 import { CheckCheck, Command, ListTodo, SunMoon } from "lucide-react";
 import { AuthCard } from "@/components/auth/auth-card";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { getBrandLogoSrc } from "@/utils/branding";
 
 interface AuthPageProps {
@@ -27,28 +27,31 @@ export const AuthPage = ({
   return (
     <div className="relative min-h-screen overflow-hidden px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto flex min-h-[calc(100vh-3rem)] max-w-7xl flex-col gap-10">
-        <header className="flex items-center justify-between gap-4">
+        <header className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
             <img
               src={getBrandLogoSrc(isDarkMode)}
               alt="To Do List logo"
-              className="h-12 w-12 rounded-2xl object-cover"
+              className="h-12 w-12 rounded-2xl object-cover shrink-0"
             />
             <div>
               <p className="text-sm uppercase tracking-[0.28em] text-muted-foreground">To Do List</p>
-              <h1 className="mt-1 text-2xl font-semibold tracking-tight">Productivity that stays out of your way</h1>
+              <h1 className="mt-1 text-xl font-semibold tracking-tight sm:text-2xl">
+                <span className="hidden sm:inline">Productivity that stays out of your way</span>
+                <span className="sm:hidden">Productivity Suite</span>
+              </h1>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" className="rounded-2xl" onClick={onToggleTheme}>
+          <div className="flex w-full sm:w-auto items-center justify-end gap-2">
+            <Button variant="outline" size="icon" className="rounded-2xl shrink-0" onClick={onToggleTheme}>
               <span className="sr-only">Toggle theme</span>
               <SunMoon className="h-4 w-4 text-foreground" />
             </Button>
-            <Button variant="outline" className="rounded-2xl" onClick={() => setAuthModalMode("sign-in")}>
+            <Button variant="outline" className="rounded-2xl flex-1 sm:flex-none" onClick={() => setAuthModalMode("sign-in")}>
               Sign in
             </Button>
-            <Button className="rounded-2xl" onClick={() => setAuthModalMode("sign-up")}>
+            <Button className="rounded-2xl flex-1 sm:flex-none" onClick={() => setAuthModalMode("sign-up")}>
               Create account
             </Button>
           </div>
@@ -58,7 +61,7 @@ export const AuthPage = ({
           <section className="space-y-8">
             <div className="space-y-5">
               <p className="text-sm uppercase tracking-[0.28em] text-muted-foreground">Focus without clutter</p>
-              <h2 className="max-w-4xl text-5xl font-semibold tracking-tight sm:text-6xl">
+              <h2 className="max-w-4xl text-3xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
                 Plan the day, finish the work, and keep every task synced.
               </h2>
               <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
@@ -147,6 +150,10 @@ export const AuthPage = ({
 
       <Dialog open={authModalMode !== null} onOpenChange={(open) => (!open ? setAuthModalMode(null) : null)}>
         <DialogContent className="max-w-md overflow-hidden p-0">
+          <DialogTitle className="sr-only">Access workspace</DialogTitle>
+          <DialogDescription className="sr-only">
+            Sign in or create a new account to access your workspace.
+          </DialogDescription>
           <AuthCard
             className="max-w-none border-0 bg-transparent shadow-none"
             initialMode={authModalMode ?? "sign-in"}

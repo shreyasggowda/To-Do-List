@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   BriefcaseBusiness,
@@ -86,7 +87,7 @@ const NavigationContent = ({
   onNavigate,
   onSignOut,
 }: NavigationContentProps) => (
-  <div className="flex h-full flex-col">
+  <div className="flex h-full flex-col overflow-y-auto scrollbar-subtle">
     <div className="flex items-center gap-3">
       <img
         src={getBrandLogoSrc(isDarkMode)}
@@ -125,8 +126,8 @@ const NavigationContent = ({
       })}
     </div>
 
-    <div className="mt-auto space-y-3">
-      <div className="rounded-[28px] border border-black/10 bg-white/95 p-4 shadow-lg shadow-black/10 dark:border-white/10 dark:bg-white/5 dark:shadow-black/30">
+    <div className="mt-auto space-y-3 pt-6 shrink-0">
+      <div className="hidden lg:block rounded-[28px] border border-black/10 bg-white/95 p-4 shadow-lg shadow-black/10 dark:border-white/10 dark:bg-white/5 dark:shadow-black/30">
         <p className="text-sm font-semibold">Keyboard-first flow</p>
         <div className="mt-4 space-y-3 text-sm text-muted-foreground">
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
@@ -166,40 +167,48 @@ export const AppShell = ({
   onToggleTheme,
   onSignOut,
   children,
-}: AppShellProps) => (
-  <div className="relative min-h-screen px-4 py-4 sm:px-6 lg:px-8">
-    <div className="mx-auto grid max-w-[1600px] gap-4 lg:grid-cols-[280px_minmax(0,1fr)]">
-      <aside className="glass-panel-strong surface-outline sticky top-4 hidden h-[calc(100vh-2rem)] self-start overflow-hidden p-6 lg:block">
-        <NavigationContent
-          activePage={activePage}
-          isDarkMode={isDarkMode}
-          userEmail={userEmail}
-          onNavigate={onNavigate}
-          onSignOut={onSignOut}
-        />
-      </aside>
+}: AppShellProps) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-      <div className="space-y-4">
-        <header className="glass-panel-strong surface-outline sticky top-4 z-30 p-4 sm:p-5">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex items-start gap-3">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline" size="icon" className="rounded-2xl lg:hidden">
-                    <span className="sr-only">Open navigation</span>
-                    <Menu className="h-4 w-4" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent className="lg:hidden">
-                  <NavigationContent
-                    activePage={activePage}
-                    isDarkMode={isDarkMode}
-                    userEmail={userEmail}
-                    onNavigate={onNavigate}
-                    onSignOut={onSignOut}
-                  />
-                </SheetContent>
-              </Sheet>
+  const handleNavigate = (page: TaskPage) => {
+    onNavigate(page);
+    setIsMobileMenuOpen(false);
+  };
+
+  return (
+    <div className="relative min-h-screen px-4 py-4 sm:px-6 lg:px-8">
+      <div className="mx-auto grid max-w-[1600px] gap-4 lg:grid-cols-[280px_minmax(0,1fr)]">
+        <aside className="glass-panel-strong surface-outline sticky top-4 hidden h-[calc(100vh-2rem)] self-start overflow-hidden p-6 lg:block">
+          <NavigationContent
+            activePage={activePage}
+            isDarkMode={isDarkMode}
+            userEmail={userEmail}
+            onNavigate={handleNavigate}
+            onSignOut={onSignOut}
+          />
+        </aside>
+
+        <div className="space-y-4">
+          <header className="glass-panel-strong surface-outline sticky top-4 z-30 p-4 sm:p-5">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex items-start gap-3">
+                <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="outline" size="icon" className="rounded-2xl lg:hidden">
+                      <span className="sr-only">Open navigation</span>
+                      <Menu className="h-4 w-4" />
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent className="lg:hidden">
+                    <NavigationContent
+                      activePage={activePage}
+                      isDarkMode={isDarkMode}
+                      userEmail={userEmail}
+                      onNavigate={handleNavigate}
+                      onSignOut={onSignOut}
+                    />
+                  </SheetContent>
+                </Sheet>
 
               <div>
                 <p className="text-sm uppercase tracking-[0.24em] text-muted-foreground">Workspace</p>
@@ -220,10 +229,15 @@ export const AppShell = ({
                 {isSyncing ? (
                   <span className="inline-flex items-center gap-2">
                     <LoaderCircle className="h-3.5 w-3.5 animate-spin" />
-                    Syncing workspace
+                    <span className="hidden sm:inline">Syncing workspace</span>
+                    <span className="sm:hidden">Syncing</span>
                   </span>
                 ) : (
-                  "Cloud sync active"
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <span className="hidden sm:inline">Cloud sync active</span>
+                    <span className="sm:hidden">Synced</span>
+                  </span>
                 )}
               </div>
 
@@ -233,8 +247,8 @@ export const AppShell = ({
                 onClick={onOpenCommandPalette}
               >
                 <Command className="h-4 w-4" />
-                Search commands
-                <span className="rounded-full bg-black/[0.05] px-2 py-1 text-[11px] text-muted-foreground dark:bg-white/10">
+                <span className="hidden sm:inline">Search commands</span>
+                <span className="hidden md:inline rounded-full bg-black/[0.05] px-2 py-1 text-[11px] text-muted-foreground dark:bg-white/10">
                   Cmd/Ctrl + K
                 </span>
               </Button>
@@ -246,7 +260,8 @@ export const AppShell = ({
 
               <Button className="rounded-2xl" onClick={onCreateTask}>
                 <Plus className="h-4 w-4" />
-                New task
+                <span className="hidden sm:inline">New task</span>
+                <span className="sm:hidden">New</span>
               </Button>
             </div>
           </div>
@@ -256,4 +271,5 @@ export const AppShell = ({
       </div>
     </div>
   </div>
-);
+  );
+};

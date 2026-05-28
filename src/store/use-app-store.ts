@@ -135,7 +135,7 @@ export const useAppStore = create<AppState>()(
         const { error } = await supabase.auth.signInWithOAuth({
           provider: "google",
           options: {
-            redirectTo: window.location.origin,
+            redirectTo: window.location.origin + "/",
           },
         });
 
@@ -152,7 +152,7 @@ export const useAppStore = create<AppState>()(
           email,
           password,
           options: {
-            emailRedirectTo: window.location.origin,
+            emailRedirectTo: window.location.origin + "/",
           },
         });
 
@@ -404,8 +404,8 @@ export const useAppStore = create<AppState>()(
       // signed-in user gets a synced workspace instead of a browser-only list.
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
-        theme: state.theme,
         activePage: state.activePage,
+        theme: state.theme,
       }),
     },
   ),

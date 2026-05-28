@@ -80,6 +80,7 @@ const App = () => {
   const setActivePage = useAppStore((state) => state.setActivePage);
   const setCommandPaletteOpen = useAppStore((state) => state.setCommandPaletteOpen);
   const setTheme = useAppStore((state) => state.setTheme);
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
   const editingTask = useEditingTask();
 
   useThemeSync(theme);
@@ -158,12 +159,6 @@ const App = () => {
       setActivePage(page);
       setCommandPaletteOpen(false);
     });
-  };
-
-  const toggleTheme = () => {
-    const nextTheme = theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
-    toast.success(`${nextTheme === "dark" ? "Dark" : "Light"} mode enabled`);
   };
 
   useKeyboardShortcuts({

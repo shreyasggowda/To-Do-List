@@ -59,6 +59,7 @@ export const AppCommandPalette = ({
           Toggle theme
           <CommandShortcut>Shift T</CommandShortcut>
         </CommandItem>
+
         <CommandItem onSelect={onSignOut}>
           <LogOut className="h-4 w-4" />
           Sign out
