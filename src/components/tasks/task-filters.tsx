@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,23 @@ export const TaskFiltersPanel = ({
   onReset,
 }: TaskFiltersProps) => {
   const [showFilters, setShowFilters] = useState(false);
+  const [localQuery, setLocalQuery] = useState(filters.query);
+
+  // Keep local query in sync if the global query filter changes (e.g. on Reset/Clear)
+  useEffect(() => {
+    setLocalQuery(filters.query);
+  }, [filters.query]);
+
+  // Debounce updates to global store to prevent full page re-renders on every keystroke
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (localQuery !== filters.query) {
+        onFiltersChange({ query: localQuery });
+      }
+    }, 150);
+
+    return () => clearTimeout(timer);
+  }, [localQuery, onFiltersChange, filters.query]);
 
   const activeFiltersCount = [
     filters.status !== "all",
@@ -39,8 +56,8 @@ export const TaskFiltersPanel = ({
         <div className="relative flex-1">
           <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            value={filters.query}
-            onChange={(event) => onFiltersChange({ query: event.target.value })}
+            value={localQuery}
+            onChange={(event) => setLocalQuery(event.target.value)}
             placeholder="Search tasks, notes, or tags..."
             className="h-10 rounded-[18px] pl-10 shadow-none"
           />

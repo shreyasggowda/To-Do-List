@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { closestCenter, DndContext, KeyboardSensor, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -17,6 +18,9 @@ interface TaskListProps {
   onReorder: (activeId: string, overId: string, visibleTaskIds: string[]) => void;
 }
 
+const POINTER_SENSOR_OPTIONS = { activationConstraint: { distance: 6 } };
+const TOUCH_SENSOR_OPTIONS = { activationConstraint: { delay: 180, tolerance: 6 } };
+
 export const TaskList = ({
   tasks,
   onToggle,
@@ -24,11 +28,17 @@ export const TaskList = ({
   onDelete,
   onReorder,
 }: TaskListProps) => {
+  const keyboardSensorOptions = useMemo(() => ({
+    coordinateGetter: sortableKeyboardCoordinates
+  }), []);
+
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
-    useSensor(TouchSensor, { activationConstraint: { delay: 180, tolerance: 6 } }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+    useSensor(PointerSensor, POINTER_SENSOR_OPTIONS),
+    useSensor(TouchSensor, TOUCH_SENSOR_OPTIONS),
+    useSensor(KeyboardSensor, keyboardSensorOptions),
   );
+
+  const taskIds = useMemo(() => tasks.map((task) => task.id), [tasks]);
 
   return (
     <div className="space-y-3">
@@ -38,11 +48,11 @@ export const TaskList = ({
           collisionDetection={closestCenter}
           onDragEnd={(event) => {
             if (event.over) {
-              onReorder(String(event.active.id), String(event.over.id), tasks.map((task) => task.id));
+              onReorder(String(event.active.id), String(event.over.id), taskIds);
             }
           }}
         >
-          <SortableContext items={tasks.map((task) => task.id)} strategy={verticalListSortingStrategy}>
+          <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
             <AnimatePresence initial={false}>
               {tasks.map((task) => (
                 <TaskItem

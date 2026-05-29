@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -48,14 +48,8 @@ export const TaskDialog = ({
   onCreate,
   onUpdate,
 }: TaskDialogProps) => {
-  const [values, setValues] = useState<TaskFormValues>(emptyValues);
+  const [values, setValues] = useState<TaskFormValues>(() => toFormValues(task));
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    if (isOpen) {
-      setValues(toFormValues(task));
-    }
-  }, [isOpen, task]);
 
   const handleSubmit = async () => {
     if (!values.title.trim()) {
