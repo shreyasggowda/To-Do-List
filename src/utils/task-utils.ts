@@ -1,4 +1,4 @@
-import { eachDayOfInterval, format, isSameDay, parseISO, subDays } from "date-fns";
+import { eachDayOfInterval, format, parseISO, subDays } from "date-fns";
 import type { DashboardStats, Task, TaskFilters, TaskPriority } from "@/types/task";
 import { isTaskDueToday, isTaskOverdue, isTaskUpcoming } from "@/utils/date";
 
@@ -80,18 +80,17 @@ export const getDashboardStats = (tasks: Task[]): DashboardStats => {
 export const calculateProductivityStreak = (tasks: Task[]) => {
   const completedDates = tasks
     .filter((task) => task.completedAt)
-    .map((task) => parseISO(task.completedAt!));
+    .map((task) => format(parseISO(task.completedAt!), "yyyy-MM-dd"));
 
   if (completedDates.length === 0) {
     return 0;
   }
 
+  const completedSet = new Set(completedDates);
   let streak = 0;
   let cursor = new Date();
 
-  while (
-    completedDates.some((completedDate) => isSameDay(completedDate, cursor))
-  ) {
+  while (completedSet.has(format(cursor, "yyyy-MM-dd"))) {
     streak += 1;
     cursor = subDays(cursor, 1);
   }
@@ -105,12 +104,24 @@ export const getWeeklyCompletionData = (tasks: Task[]) => {
     end: new Date(),
   });
 
-  return interval.map((day) => ({
-    day: format(day, "EEE"),
-    completed: tasks.filter(
-      (task) => task.completedAt && isSameDay(parseISO(task.completedAt), day),
-    ).length,
-  }));
+  // Parse and format completed task dates once to avoid redundant string parses
+  const completedDayStrings = tasks
+    .filter((task) => task.completedAt)
+    .map((task) => format(parseISO(task.completedAt!), "yyyy-MM-dd"));
+
+  // Build a frequency map of completed dates for O(1) lookup
+  const completionCountMap = new Map<string, number>();
+  for (const dateStr of completedDayStrings) {
+    completionCountMap.set(dateStr, (completionCountMap.get(dateStr) || 0) + 1);
+  }
+
+  return interval.map((day) => {
+    const dayStr = format(day, "yyyy-MM-dd");
+    return {
+      day: format(day, "EEE"),
+      completed: completionCountMap.get(dayStr) || 0,
+    };
+  });
 };
 
 export const getPriorityChartData = (tasks: Task[]) =>

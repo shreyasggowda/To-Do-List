@@ -46,15 +46,15 @@ export const TaskItem = ({ task, onToggle, onEdit, onDelete }: TaskItemProps) =>
       exit={{ opacity: 0, y: -10 }}
       className={cn(isDragging && "z-20")}
     >
-        <Card
-          className={cn(
+      <Card
+        className={cn(
           "transition duration-200 hover:-translate-y-0.5 hover:bg-black/[0.03] dark:hover:bg-white/[0.08]",
           task.completed && "opacity-75",
           isDragging && "shadow-glow",
         )}
       >
         <CardContent className="p-4">
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-3 pt-3">
             <button
               type="button"
               onClick={() => onToggle(task.id)}
@@ -69,7 +69,7 @@ export const TaskItem = ({ task, onToggle, onEdit, onDelete }: TaskItemProps) =>
             </button>
 
             <div className="min-w-0 flex-1">
-              <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <p
                     className={cn(

@@ -28,7 +28,7 @@ export const TasksPage = ({
   onDeleteTask,
   onReorder,
 }: TasksPageProps) => (
-  <div className="space-y-4">
+  <div className="space-y-6">
     <TaskFiltersPanel
       filters={filters}
       availableTags={availableTags}

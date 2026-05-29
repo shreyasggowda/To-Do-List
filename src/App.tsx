@@ -1,4 +1,4 @@
-import { startTransition, useDeferredValue, useEffect } from "react";
+import { startTransition, useDeferredValue, useEffect, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Toaster, toast } from "sonner";
 import { AppCommandPalette } from "@/components/app-command-palette";
@@ -148,11 +148,32 @@ const App = () => {
   }, [loadTasks, setSession]);
 
   const deferredQuery = useDeferredValue(filters.query);
-  const filteredTasks = filterTasks(tasks, { ...filters, query: deferredQuery });
-  const stats = getDashboardStats(tasks);
-  const availableTags = getUniqueTags(tasks);
-  const weeklyCompletionData = getWeeklyCompletionData(tasks);
-  const priorityChartData = getPriorityChartData(tasks);
+
+  const filteredTasks = useMemo(() => {
+    return filterTasks(tasks, {
+      query: deferredQuery,
+      status: filters.status,
+      priority: filters.priority,
+      tag: filters.tag,
+      view: filters.view,
+    });
+  }, [tasks, filters.status, filters.priority, filters.tag, filters.view, deferredQuery]);
+
+  const stats = useMemo(() => {
+    return getDashboardStats(tasks);
+  }, [tasks]);
+
+  const availableTags = useMemo(() => {
+    return getUniqueTags(tasks);
+  }, [tasks]);
+
+  const weeklyCompletionData = useMemo(() => {
+    return getWeeklyCompletionData(tasks);
+  }, [tasks]);
+
+  const priorityChartData = useMemo(() => {
+    return getPriorityChartData(tasks);
+  }, [tasks]);
 
   const navigateTo = (page: TaskPage) => {
     startTransition(() => {
@@ -318,6 +339,7 @@ const App = () => {
       </AppShell>
 
       <TaskDialog
+        key={`${isTaskDialogOpen}-${editingTask?.id ?? "new"}`}
         isOpen={isTaskDialogOpen}
         task={editingTask}
         onClose={closeTaskDialog}

@@ -353,23 +353,41 @@ export const useAppStore = create<AppState>()(
           };
         });
 
+        // Filter down to ONLY the tasks whose order actually changed to minimize payload size
+        const tasksToUpdate = nextTasks.filter((task) => {
+          const original = state.tasks.find((t) => t.id === task.id);
+          return !original || original.order !== task.order;
+        });
+
+        if (tasksToUpdate.length === 0) {
+          return;
+        }
+
+        // Optimistically set state
         set({ tasks: nextTasks });
 
-        const updates = await Promise.all(
-          nextTasks.map((task) =>
-            db
-              .from("tasks")
-              .update({ order_index: task.order })
-              .eq("id", task.id)
-              .eq("user_id", userId),
-          ),
-        );
+        // Upsert all modified tasks in a single efficient network call
+        const payload = tasksToUpdate.map((task) => ({
+          id: task.id,
+          user_id: userId,
+          title: task.title,
+          description: task.description,
+          completed: task.completed,
+          priority: task.priority,
+          due_date: task.dueDate,
+          tags: task.tags,
+          order_index: task.order,
+          created_at: task.createdAt,
+          updated_at: task.updatedAt,
+          completed_at: task.completedAt,
+        }));
 
-        const failedUpdate = updates.find((result) => result.error);
+        const { error } = await db.from("tasks").upsert(payload);
 
-        if (failedUpdate?.error) {
+        if (error) {
+          // Rollback on error
           await get().loadTasks();
-          throw new Error(failedUpdate.error.message);
+          throw new Error(error.message);
         }
       },
       updateFilters: (patch) =>
@@ -412,7 +430,8 @@ export const useAppStore = create<AppState>()(
 );
 
 export const useEditingTask = () => {
-  const tasks = useAppStore((state) => state.tasks);
-  const editingTaskId = useAppStore((state) => state.editingTaskId);
-  return tasks.find((task) => task.id === editingTaskId) ?? null;
+  return useAppStore((state) => {
+    const editingTaskId = state.editingTaskId;
+    return state.tasks.find((task) => task.id === editingTaskId) ?? null;
+  });
 };
