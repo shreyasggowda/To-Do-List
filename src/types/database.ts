@@ -15,4 +15,6 @@ export interface TaskRecord {
   updated_at: string;
   completed_at: string | null;
   order_index: number;
+  is_daily: boolean;
+  completed_dates: string[];
 }

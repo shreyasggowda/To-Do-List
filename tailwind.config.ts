@@ -47,6 +47,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["'Plus Jakarta Sans'", "sans-serif"],
+        handwriting: ["'Patrick Hand'", "cursive"],
       },
       boxShadow: {
         glow: "0 20px 45px -25px rgba(0, 0, 0, 0.5)",

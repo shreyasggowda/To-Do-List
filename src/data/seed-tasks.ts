@@ -24,6 +24,8 @@ export const seedTasks: Task[] = [
     updatedAt: addDays(today, -1),
     completedAt: null,
     order: 0,
+    isDaily: false,
+    completedDates: [],
   },
   {
     id: crypto.randomUUID(),
@@ -38,6 +40,8 @@ export const seedTasks: Task[] = [
     updatedAt: addDays(today, -1),
     completedAt: null,
     order: 1,
+    isDaily: false,
+    completedDates: [],
   },
   {
     id: crypto.randomUUID(),
@@ -52,6 +56,8 @@ export const seedTasks: Task[] = [
     updatedAt: addDays(today, -1),
     completedAt: null,
     order: 2,
+    isDaily: false,
+    completedDates: [],
   },
   {
     id: crypto.randomUUID(),
@@ -66,6 +72,8 @@ export const seedTasks: Task[] = [
     updatedAt: addDays(today, -1),
     completedAt: addDays(today, -1),
     order: 3,
+    isDaily: false,
+    completedDates: [],
   },
   {
     id: crypto.randomUUID(),
@@ -80,5 +88,7 @@ export const seedTasks: Task[] = [
     updatedAt: addDays(today, -2),
     completedAt: addDays(today, -2),
     order: 4,
+    isDaily: false,
+    completedDates: [],
   },
 ];

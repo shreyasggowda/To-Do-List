@@ -17,6 +17,8 @@ export interface Task {
   updatedAt: string;
   completedAt: string | null;
   order: number;
+  isDaily: boolean;
+  completedDates: string[];
 }
 
 export interface TaskFormValues {
@@ -25,6 +27,7 @@ export interface TaskFormValues {
   priority: TaskPriority;
   dueDate: string;
   tags: string;
+  isDaily: boolean;
 }
 
 export interface TaskFilters {

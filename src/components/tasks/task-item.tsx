@@ -117,31 +117,35 @@ export const TaskItem = ({ task, onToggle, onEdit, onDelete }: TaskItemProps) =>
                 </div>
               </div>
 
-              <div className="mt-4 flex flex-wrap items-center gap-2">
-                <Badge variant={priorityVariantMap[task.priority]} className="capitalize">
-                  {task.priority}
-                </Badge>
+              {!task.isDaily && (
+                <>
+                  <div className="mt-4 flex flex-wrap items-center gap-2">
+                    <Badge variant={priorityVariantMap[task.priority]} className="capitalize">
+                      {task.priority}
+                    </Badge>
 
-                <Badge
-                  variant={isTaskOverdue(task.dueDate) && !task.completed ? "destructive" : "secondary"}
-                  className="gap-1"
-                >
-                  <CalendarClock className="h-3.5 w-3.5" />
-                  {formatTaskDate(task.dueDate)}
-                </Badge>
+                    <Badge
+                      variant={isTaskOverdue(task.dueDate) && !task.completed ? "destructive" : "secondary"}
+                      className="gap-1"
+                    >
+                      <CalendarClock className="h-3.5 w-3.5" />
+                      {formatTaskDate(task.dueDate)}
+                    </Badge>
 
-                {task.tags.map((tag) => (
-                  <Badge key={tag} variant="secondary">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
+                    {task.tags.map((tag) => (
+                      <Badge key={tag} variant="secondary">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
 
-              <p className="mt-3 text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                {task.completed
-                  ? `Completed ${formatRelativeDate(task.completedAt)}`
-                  : formatDueContext(task.dueDate)}
-              </p>
+                  <p className="mt-3 text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                    {task.completed
+                      ? `Completed ${formatRelativeDate(task.completedAt)}`
+                      : formatDueContext(task.dueDate)}
+                  </p>
+                </>
+              )}
             </div>
           </div>
         </CardContent>
