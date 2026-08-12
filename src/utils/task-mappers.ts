@@ -19,6 +19,8 @@ export const mapTaskRecordToTask = (record: TaskRecord): Task => ({
   updatedAt: record.updated_at,
   completedAt: record.completed_at,
   order: record.order_index,
+  isDaily: record.is_daily,
+  completedDates: record.completed_dates ?? [],
 });
 
 export const buildInsertPayload = (
@@ -35,6 +37,8 @@ export const buildInsertPayload = (
   completed: false,
   completed_at: null,
   order_index: orderIndex,
+  is_daily: values.isDaily,
+  completed_dates: [],
 });
 
 export const buildUpdatePayload = (values: TaskFormValues) => ({
@@ -43,4 +47,5 @@ export const buildUpdatePayload = (values: TaskFormValues) => ({
   priority: values.priority,
   due_date: values.dueDate || null,
   tags: parseTags(values.tags),
+  is_daily: values.isDaily,
 });

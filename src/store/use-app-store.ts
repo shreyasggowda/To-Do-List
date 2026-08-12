@@ -30,6 +30,7 @@ interface AppState {
   isTaskDialogOpen: boolean;
   isCommandPaletteOpen: boolean;
   theme: "dark" | "light";
+  hasSeenDailyTasksIntro: boolean;
   setSession: (session: Session | null) => void;
   loadTasks: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
@@ -55,6 +56,7 @@ interface AppState {
   setActivePage: (page: TaskPage) => void;
   setCommandPaletteOpen: (isOpen: boolean) => void;
   setTheme: (theme: "dark" | "light") => void;
+  setHasSeenDailyTasksIntro: (seen: boolean) => void;
 }
 
 const getCurrentUserId = (state: AppState) => state.session?.user.id ?? null;
@@ -75,6 +77,7 @@ export const useAppStore = create<AppState>()(
       isTaskDialogOpen: false,
       isCommandPaletteOpen: false,
       theme: "dark",
+      hasSeenDailyTasksIntro: false,
       setSession: (session) =>
         set({
           session,
@@ -285,14 +288,29 @@ export const useAppStore = create<AppState>()(
           throw new Error("The task could not be found.");
         }
 
-        const nextCompleted = !task.completed;
+        const todayStr = new Date().toISOString().split("T")[0];
+        let updatePayload: any = {};
+        
+        if (task.isDaily) {
+          const isCompletedToday = task.completedDates.includes(todayStr);
+          const nextCompletedDates = isCompletedToday 
+            ? task.completedDates.filter(d => d !== todayStr)
+            : [...task.completedDates, todayStr];
+          
+          updatePayload = {
+            completed_dates: nextCompletedDates,
+          };
+        } else {
+          const nextCompleted = !task.completed;
+          updatePayload = {
+            completed: nextCompleted,
+            completed_at: nextCompleted ? new Date().toISOString() : null,
+          };
+        }
 
         const { data, error } = await supabase
           .from("tasks")
-          .update({
-            completed: nextCompleted,
-            completed_at: nextCompleted ? new Date().toISOString() : null,
-          })
+          .update(updatePayload)
           .eq("id", taskId)
           .eq("user_id", userId)
           .select("*")
@@ -380,6 +398,8 @@ export const useAppStore = create<AppState>()(
           created_at: task.createdAt,
           updated_at: task.updatedAt,
           completed_at: task.completedAt,
+          is_daily: task.isDaily,
+          completed_dates: task.completedDates,
         }));
 
         const { error } = await db.from("tasks").upsert(payload);
@@ -414,6 +434,7 @@ export const useAppStore = create<AppState>()(
       setActivePage: (page) => set({ activePage: page }),
       setCommandPaletteOpen: (isOpen) => set({ isCommandPaletteOpen: isOpen }),
       setTheme: (theme) => set({ theme }),
+      setHasSeenDailyTasksIntro: (seen) => set({ hasSeenDailyTasksIntro: seen }),
     }),
     {
       name: STORAGE_KEYS.ui,
@@ -424,6 +445,7 @@ export const useAppStore = create<AppState>()(
       partialize: (state) => ({
         activePage: state.activePage,
         theme: state.theme,
+        hasSeenDailyTasksIntro: state.hasSeenDailyTasksIntro,
       }),
     },
   ),

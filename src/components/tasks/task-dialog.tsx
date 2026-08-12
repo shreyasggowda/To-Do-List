@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import type { Task, TaskFormValues, TaskPriority } from "@/types/task";
 
@@ -20,6 +21,7 @@ const emptyValues: TaskFormValues = {
   priority: "medium",
   dueDate: "",
   tags: "",
+  isDaily: false,
 };
 
 const toFormValues = (task: Task | null): TaskFormValues =>
@@ -30,6 +32,7 @@ const toFormValues = (task: Task | null): TaskFormValues =>
         priority: task.priority,
         dueDate: task.dueDate?.slice(0, 10) ?? "",
         tags: task.tags.join(", "),
+        isDaily: task.isDaily,
       }
     : emptyValues;
 
@@ -140,6 +143,20 @@ export const TaskDialog = ({
               placeholder="Strategy, Design, Personal"
             />
             <p className="text-xs text-muted-foreground">Separate multiple tags with commas.</p>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="daily-task-mode"
+              checked={values.isDaily}
+              onCheckedChange={(checked) => setValues((current) => ({ ...current, isDaily: checked }))}
+            />
+            <label
+              htmlFor="daily-task-mode"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Mark as Daily Task
+            </label>
           </div>
         </div>
 
